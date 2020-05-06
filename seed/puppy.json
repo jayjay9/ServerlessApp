@@ -1,0 +1,17 @@
+[
+    {
+      "id": "1",
+      "name": "Addie",
+      "breed": "Corgi"
+    },
+    {
+        "id": "2",
+        "name": "Peppy",
+        "breed": "Border Collie"
+    },
+    {
+        "id": "3",
+        "name": "Snowball",
+        "breed": "Lab"
+    }
+]

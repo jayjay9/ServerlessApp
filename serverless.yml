@@ -1,0 +1,53 @@
+service: serverless-template
+app: serverless-template
+# org: Jenine
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+
+custom:
+  tableName: puppy
+  dynamodb:
+    stages:
+      - dev
+    start:
+      migrate: true
+      seed: true
+    seed:
+      puppy:
+        sources:
+          - table: ${self:custom.tableName}
+            sources: [./seed/puppy.json]
+  serverless-offline:
+    host: 0.0.0.0 # needed for vagrant access
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+
+resources:
+  Resources:
+    puppyTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
